@@ -234,6 +234,11 @@ typedef struct CXPLAT_RECV_DATA {
     uint16_t Reserved : 6;
     uint16_t ReservedEx : 8;
 
+    //
+    // The index of this packet as part of a Coalesced group, e.g. URO.
+    //
+    uint8_t CoalescedIndex;
+
 } CXPLAT_RECV_DATA;
 
 //

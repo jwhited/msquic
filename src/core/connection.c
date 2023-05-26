@@ -5642,6 +5642,9 @@ QuicConnRecvDatagrams(
             CXPLAT_DBG_ASSERT(BatchCount < QUIC_MAX_CRYPTO_BATCH_COUNT);
             CXPLAT_DBG_ASSERT(Datagram->Allocated);
             Connection->Stats.Recv.TotalPackets++;
+            if (Connection->Stats.Recv.MaxCoalescedCount < Datagram->CoalescedIndex+1) {
+                Connection->Stats.Recv.MaxCoalescedCount = Datagram->CoalescedIndex+1;
+            }
 
             if (!Packet->ValidatedHeaderInv) {
                 //
@@ -6771,6 +6774,7 @@ QuicConnGetV2Statistics(
     Stats->RecvDecryptionFailures = Connection->Stats.Recv.DecryptionFailures;
     Stats->RecvValidAckFrames = Connection->Stats.Recv.ValidAckFrames;
     Stats->KeyUpdateCount = Connection->Stats.Misc.KeyUpdateCount;
+    Stats->RecvMaxCoalescedCount = Connection->Stats.Recv.MaxCoalescedCount;
 
     if (IsPlat) {
         Stats->TimingStart = CxPlatTimeUs64ToPlat(Stats->TimingStart); // cppcheck-suppress selfAssignment

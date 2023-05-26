@@ -296,6 +296,8 @@ typedef struct QUIC_CONN_STATS {
 
         uint64_t TotalBytes;            // Sum of UDP payloads
         uint64_t TotalStreamBytes;      // Sum of stream payloads
+
+        uint8_t MaxCoalescedCount;
     } Recv;
 
     struct {

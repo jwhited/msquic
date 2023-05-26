@@ -334,7 +334,7 @@ QuicPrintConnectionStatistics(
             &StatsSize,
             &Statistics))) {
         WriteOutput(
-            "[conn][%p] STATS: EcnCapable=%u RTT=%u us SendTotalPackets=%llu SendSuspectedLostPackets=%llu SendSpuriousLostPackets=%llu SendCongestionCount=%u SendEcnCongestionCount=%u RecvTotalPackets=%llu RecvReorderedPackets=%llu RecvDroppedPackets=%llu RecvDuplicatePackets=%llu RecvDecryptionFailures=%llu\n",
+            "[conn][%p] STATS: EcnCapable=%u RTT=%u us SendTotalPackets=%llu SendSuspectedLostPackets=%llu SendSpuriousLostPackets=%llu SendCongestionCount=%u SendEcnCongestionCount=%u RecvTotalPackets=%llu RecvReorderedPackets=%llu RecvDroppedPackets=%llu RecvDuplicatePackets=%llu RecvDecryptionFailures=%llu RecvMaxCoalescedCount=%u\n",
             Connection,
             Statistics.EcnCapable,
             Statistics.Rtt,
@@ -347,6 +347,7 @@ QuicPrintConnectionStatistics(
             (unsigned long long)Statistics.RecvReorderedPackets,
             (unsigned long long)Statistics.RecvDroppedPackets,
             (unsigned long long)Statistics.RecvDuplicatePackets,
-            (unsigned long long)Statistics.RecvDecryptionFailures);
+            (unsigned long long)Statistics.RecvDecryptionFailures,
+            Statistics.RecvMaxCoalescedCount);
     }
 }

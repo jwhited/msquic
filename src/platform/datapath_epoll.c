@@ -1871,6 +1871,7 @@ CxPlatSocketContextRecvComplete(
         // Build up the chain of receive packets to indicate up to the app.
         //
         uint32_t Offset = 0;
+        uint8_t CoalescedIndex = 0;
         while (Offset < RecvMsgHdr[CurrentMessage].msg_len &&
                RecvBlock->RefCount < CXPLAT_MAX_IO_BATCH_SIZE) {
             RecvBlock->RefCount++;
@@ -1890,10 +1891,12 @@ CxPlatSocketContextRecvComplete(
             RecvData->Allocated = TRUE;
             RecvData->QueuedOnConnection = FALSE;
             RecvData->Reserved = FALSE;
+            RecvData->CoalescedIndex = CoalescedIndex;
 
             *DatagramTail = RecvData;
             DatagramTail = &RecvData->Next;
 
+            CoalescedIndex++;
             Offset += RecvData->BufferLength;
             SubBlock = (CXPLAT_RECV_SUBBLOCK*)
                 ((char*)SubBlock + SocketContext->DatapathProc->Datapath->RecvBlockStride);

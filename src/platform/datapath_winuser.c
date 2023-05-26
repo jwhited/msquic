@@ -3890,6 +3890,7 @@ CxPlatDataPathUdpRecvComplete(
 
         Datagram = (CXPLAT_RECV_DATA*)(RecvContext + 1);
 
+        uint8_t CoalescedIndex = 0;
         for ( ;
             NumberOfBytesTransferred != 0;
             NumberOfBytesTransferred -= MessageLength) {
@@ -3913,6 +3914,7 @@ CxPlatDataPathUdpRecvComplete(
             Datagram->TypeOfService = (uint8_t)ECN;
             Datagram->Allocated = TRUE;
             Datagram->QueuedOnConnection = FALSE;
+            Datagram->CoalescedIndex = CoalescedIndex;
 
             RecvPayload += MessageLength;
 
@@ -3927,6 +3929,7 @@ CxPlatDataPathUdpRecvComplete(
                 (((PUCHAR)Datagram) +
                     SocketProc->Parent->Datapath->DatagramStride);
 
+            CoalescedIndex++;
             if (IsCoalesced && ++MessageCount == URO_MAX_DATAGRAMS_PER_INDICATION) {
                 QuicTraceLogWarning(
                     DatapathUroPreallocExceeded,
